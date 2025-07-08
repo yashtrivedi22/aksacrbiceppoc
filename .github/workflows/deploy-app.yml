@@ -5,9 +5,9 @@ on:
 
 env:
   IMAGE_NAME: myapp
-  ACR_NAME: demoacr123
-  ACR_LOGIN_SERVER: demoacr123.azurecr.io
-  AKS_CLUSTER_NAME: demo-aks
+  ACR_NAME: demoacry2201
+  ACR_LOGIN_SERVER: demoacry2201.azurecr.io
+  AKS_CLUSTER_NAME: demoaksy2201
 
 jobs:
   build-and-deploy:
