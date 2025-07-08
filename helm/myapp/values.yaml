@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: demoacry2201.azurecr.io/myapp
+  repository: acryt2201demo.azurecr.io/myapp
   pullPolicy: Always
   tag: latest
 
