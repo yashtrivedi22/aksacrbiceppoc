@@ -22,3 +22,4 @@ jobs:
           --resource-group ${{ secrets.RESOURCE_GROUP }} \
           --template-file infra/main.bicep \
           --parameters acrName=myacryt2201 aksName=myaksyt2201
+          --debug
