@@ -1,5 +1,4 @@
 param location string = 'South India'
-param resourceGroupName string = 'sharedsrvrg'
 param aksName string = 'demoaksy2201'
 param acrName string = 'demoacry2201'
 
@@ -40,6 +39,6 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   scope: acr
   properties: {
     principalId: aks.identity.principalId
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9685316-3be3-493d-8fd3-2f8aa6942dbc')
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
   }
 }
