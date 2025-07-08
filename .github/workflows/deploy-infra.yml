@@ -1,0 +1,24 @@
+name: Deploy Infrastructure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Bicep Template
+      run: |
+        az deployment group create \
+          --resource-group ${{ secrets.RESOURCE_GROUP }} \
+          --template-file infra/main.bicep \
+          --parameters location='${{ secrets.LOCATION }}'
