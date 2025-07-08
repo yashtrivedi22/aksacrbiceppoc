@@ -7,9 +7,6 @@ param acrName string = 'acryt2201demo'
 @description('Name of the AKS Cluster')
 param aksName string = 'aksyt2201demo'
 
-@description('AKS Kubernetes version')
-param kubernetesVersion string = '1.29.0'
-
 @description('Node pool VM size')
 param agentVMSize string = 'Standard_DS2_v2'
 
@@ -45,7 +42,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-01-01' = {
     }
   }
   properties: {
-    kubernetesVersion: kubernetesVersion
     dnsPrefix: '${aksName}-dns'
     agentPoolProfiles: [
       {
