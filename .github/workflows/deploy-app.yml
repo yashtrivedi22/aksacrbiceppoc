@@ -3,6 +3,10 @@ name: Build and Deploy App
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+  
 env:
   IMAGE_NAME: myapp
   ACR_NAME: acryt2201demo
