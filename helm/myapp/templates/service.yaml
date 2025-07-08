@@ -5,11 +5,12 @@ metadata:
   labels:
     {{- include "myapp.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: 80
+    - port: 80
+      targetPort: 8080
       protocol: TCP
       name: http
   selector:
-    {{- include "myapp.selectorLabels" . | nindent 4 }}
+    {{- include "myapp.labels" . | nindent 4 }}
+
