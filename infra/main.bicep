@@ -2,10 +2,10 @@
 param location string = resourceGroup().location
 
 @description('Name of the Azure Container Registry')
-param acrName string = 'myacryt2201'
+param acrName string = 'acryt2201demo'
 
 @description('Name of the AKS Cluster')
-param aksName string = 'myAksyt2201'
+param aksName string = 'aksyt2201demo'
 
 @description('AKS Kubernetes version')
 param kubernetesVersion string = '1.29.0'
