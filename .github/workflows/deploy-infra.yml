@@ -21,4 +21,4 @@ jobs:
         az deployment group create \
           --resource-group ${{ secrets.RESOURCE_GROUP }} \
           --template-file infra/main.bicep \
-          --parameters location='${{ secrets.LOCATION }}'
+          --parameters location='South India'
