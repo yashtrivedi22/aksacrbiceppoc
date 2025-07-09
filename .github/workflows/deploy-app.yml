@@ -1,47 +1,37 @@
-name: Build and Deploy App
+name: Build and Deploy to AKS with Helm
 
 on:
   workflow_dispatch:
- 
-env:
-  IMAGE_NAME: myapp
-  ACR_NAME: acryt2201demo
-  ACR_LOGIN_SERVER: acryt2201demo.azurecr.io
-  AKS_CLUSTER_NAME: aksyt2201demo
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     - name: Azure Login
-      uses: azure/login@v2
+      uses: azure/login@v1
       with:
-         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Log in to ACR
-      uses: azure/docker-login@v2
-      with:
-        login-server: ${{ env.ACR_LOGIN_SERVER }}
-        username: ${{ secrets.AZURE_CLIENT_ID }}
-        password: ${{ secrets.AZURE_CLIENT_SECRET }}
+    - name: Azure Container Registry Login
+      run: az acr login --name ${{ secrets.REGISTRY_NAME }}
 
-    - name: Build and push Docker image
+    - name: Build and Push Docker Image
       run: |
-        docker build -t ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest .
-        docker push ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:latest
+        docker build -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest .
+        docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest
 
-    - name: Set AKS context
+    - name: Set AKS Context
       uses: azure/aks-set-context@v3
       with:
         resource-group: ${{ secrets.RESOURCE_GROUP }}
-        cluster-name: ${{ env.AKS_CLUSTER_NAME }}
+        cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
-    - name: Deploy Helm chart
+    - name: Deploy with Helm
       run: |
-        helm upgrade --install myapp-release ./helm/myapp \
-          --set image.repository=${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }} \
+        helm upgrade --install my-app ./helm \
+          --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app \
           --set image.tag=latest
