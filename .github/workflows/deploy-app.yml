@@ -31,6 +31,6 @@ jobs:
 
     - name: Deploy with Helm
       run: |
-        helm upgrade --install my-app ./helm \
+        helm upgrade --install namemhemcht ./helm \
           --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/demoimgyt \
           --set image.tag=latest
