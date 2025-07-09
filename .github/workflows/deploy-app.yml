@@ -26,11 +26,11 @@ jobs:
     - name: Build and Push Docker Image
       run: |
         az acr login --name ${{ secrets.REGISTRY_NAME }}
-        docker build -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest .
-        docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest
+        docker build -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/demoimgyt:latest .
+        docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/demoimgyt:latest
 
     - name: Deploy with Helm
       run: |
         helm upgrade --install my-app ./helm \
-          --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app \
+          --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/demoimgyt \
           --set image.tag=latest
