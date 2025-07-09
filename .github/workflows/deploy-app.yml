@@ -2,9 +2,6 @@ name: Build and Deploy to AKS with Helm
 
 on:
   workflow_dispatch:
-env:
-  ACR_NAME: <your-acr-name>
-  IMAGE_NAME: my-app
 
 jobs:
   build-and-deploy:
@@ -29,11 +26,11 @@ jobs:
     - name: Build and Push Docker Image
       run: |
         az acr login --name ${{ secrets.REGISTRY_NAME }}
-        docker build -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/demoappyt:latest .
-        docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/demoappyt:latest
+        docker build -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest .
+        docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest
 
     - name: Deploy with Helm
       run: |
         helm upgrade --install my-app ./helm/my-app \
-          --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/demoappyt \
+          --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app \
           --set image.tag=latest
