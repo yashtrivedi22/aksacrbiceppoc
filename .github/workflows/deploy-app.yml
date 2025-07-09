@@ -2,36 +2,38 @@ name: Build and Deploy to AKS with Helm
 
 on:
   workflow_dispatch:
+env:
+  ACR_NAME: <your-acr-name>
+  IMAGE_NAME: my-app
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Azure Container Registry Login
-      run: az acr login --name ${{ secrets.REGISTRY_NAME }}
-
-    - name: Build and Push Docker Image
-      run: |
-        docker build -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest .
-        docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app:latest
-
     - name: Set AKS Context
       uses: azure/aks-set-context@v3
       with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
         resource-group: ${{ secrets.RESOURCE_GROUP }}
         cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
 
+    - name: Build and Push Docker Image
+      run: |
+        az acr login --name ${{ secrets.REGISTRY_NAME }}
+        docker build -t ${{ secrets.REGISTRY_NAME }}.azurecr.io/demoappyt:latest .
+        docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/demoappyt:latest
+
     - name: Deploy with Helm
       run: |
-        helm upgrade --install my-app ./helm \
-          --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/my-app \
+        helm upgrade --install my-app ./helm/my-app \
+          --set image.repository=${{ secrets.REGISTRY_NAME }}.azurecr.io/demoappyt \
           --set image.tag=latest
